@@ -5,3 +5,5 @@ mypy
 pre-commit
 pytest-mock
 pytest-regressions
+python-dotenv
+uvicorn

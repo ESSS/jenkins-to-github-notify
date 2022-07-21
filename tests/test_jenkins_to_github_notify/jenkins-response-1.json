@@ -1,0 +1,101 @@
+{
+  "_class" : "hudson.model.FreeStyleBuild",
+  "actions" : [
+    {
+      "_class" : "hudson.model.CauseAction",
+      "causes" : [
+        {
+          "_class" : "hudson.triggers.TimerTrigger$TimerTriggerCause",
+          "shortDescription" : "Started by timer"
+        }
+      ]
+    },
+    {
+
+    },
+    {
+      "_class" : "hudson.plugins.git.util.BuildData",
+      "buildsByBranchName" : {
+        "origin/master" : {
+          "_class" : "hudson.plugins.git.util.Build",
+          "buildNumber" : 2179,
+          "buildResult" : null,
+          "marked" : {
+            "SHA1" : "9be65f035ce5af7fe93c8c59f6a174860d152cc5",
+            "branch" : [
+              {
+                "SHA1" : "9be65f035ce5af7fe93c8c59f6a174860d152cc5",
+                "name" : "origin/master"
+              }
+            ]
+          },
+          "revision" : {
+            "SHA1" : "9be65f035ce5af7fe93c8c59f6a174860d152cc5",
+            "branch" : [
+              {
+                "SHA1" : "9be65f035ce5af7fe93c8c59f6a174860d152cc5",
+                "name" : "origin/master"
+              }
+            ]
+          }
+        }
+      },
+      "lastBuiltRevision" : {
+        "SHA1" : "9be65f035ce5af7fe93c8c59f6a174860d152cc5",
+        "branch" : [
+          {
+            "SHA1" : "9be65f035ce5af7fe93c8c59f6a174860d152cc5",
+            "name" : "origin/master"
+          }
+        ]
+      },
+      "remoteUrls" : [
+        "git@github.com:ESSS/alfasim.git"
+      ],
+      "scmName" : ""
+    },
+    {
+
+    },
+    {
+
+    },
+    {
+
+    },
+    {
+
+    },
+    {
+      "_class" : "org.jenkinsci.plugins.displayurlapi.actions.RunDisplayAction"
+    }
+  ],
+  "artifacts" : [
+
+  ],
+  "building" : false,
+  "description" : null,
+  "displayName" : "#2179",
+  "duration" : 162232,
+  "estimatedDuration" : 14523335,
+  "executor" : null,
+  "fullDisplayName" : "[master] alfasim app win64 #2179",
+  "id" : "2179",
+  "keepLog" : false,
+  "number" : 2179,
+  "queueId" : 111948,
+  "result" : "FAILURE",
+  "timestamp" : 1658371320137,
+  "url" : "https://eden.esss.co/jenkins/view/ALFAsim/job/alfasim-master-app-win64/2179/",
+  "builtOn" : "dev-windows10-win-sv04-ci02",
+  "changeSet" : {
+    "_class" : "hudson.scm.EmptyChangeLogSet",
+    "items" : [
+
+    ],
+    "kind" : null
+  },
+  "culprits" : [
+
+  ]
+}

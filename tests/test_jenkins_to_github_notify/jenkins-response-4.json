@@ -1,0 +1,345 @@
+{
+  "_class": "hudson.model.FreeStyleBuild",
+  "actions": [
+    {
+      "_class": "hudson.model.CauseAction",
+      "causes": [
+        {
+          "_class": "hudson.model.Cause$UserIdCause",
+          "shortDescription": "Started by user Rafael Gauna Trindade ",
+          "userId": "rtrindade",
+          "userName": "Rafael Gauna Trindade "
+        }
+      ]
+    },
+    {},
+    {
+      "_class": "hudson.plugins.git.util.BuildData",
+      "buildsByBranchName": {
+        "origin/fb-ROCKY-15386-contact-api-functors": {
+          "_class": "hudson.plugins.git.util.Build",
+          "buildNumber": 6,
+          "buildResult": null,
+          "marked": {
+            "SHA1": "f5a4fb1eb2cda5a310b3c62fd683ea25cf33fb01",
+            "branch": [
+              {
+                "SHA1": "f5a4fb1eb2cda5a310b3c62fd683ea25cf33fb01",
+                "name": "origin/fb-ROCKY-15386-contact-api-functors"
+              }
+            ]
+          },
+          "revision": {
+            "SHA1": "f5a4fb1eb2cda5a310b3c62fd683ea25cf33fb01",
+            "branch": [
+              {
+                "SHA1": "f5a4fb1eb2cda5a310b3c62fd683ea25cf33fb01",
+                "name": "origin/fb-ROCKY-15386-contact-api-functors"
+              }
+            ]
+          }
+        }
+      },
+      "lastBuiltRevision": {
+        "SHA1": "f5a4fb1eb2cda5a310b3c62fd683ea25cf33fb01",
+        "branch": [
+          {
+            "SHA1": "f5a4fb1eb2cda5a310b3c62fd683ea25cf33fb01",
+            "name": "origin/fb-ROCKY-15386-contact-api-functors"
+          }
+        ]
+      },
+      "remoteUrls": [
+        "ssh://git@eden.fln.esss.com.br:7999/esss/rocky20.git"
+      ],
+      "scmName": ""
+    },
+    {
+      "_class": "hudson.plugins.git.util.BuildData",
+      "buildsByBranchName": {
+        "origin/fb-ROCKY-15386-contact-api-functors": {
+          "_class": "hudson.plugins.git.util.Build",
+          "buildNumber": 6,
+          "buildResult": null,
+          "marked": {
+            "SHA1": "fcd9f348d572e34ec820d7f4a1c193fc38f39fb4",
+            "branch": [
+              {
+                "SHA1": "fcd9f348d572e34ec820d7f4a1c193fc38f39fb4",
+                "name": "origin/fb-ROCKY-15386-contact-api-functors"
+              }
+            ]
+          },
+          "revision": {
+            "SHA1": "fcd9f348d572e34ec820d7f4a1c193fc38f39fb4",
+            "branch": [
+              {
+                "SHA1": "fcd9f348d572e34ec820d7f4a1c193fc38f39fb4",
+                "name": "origin/fb-ROCKY-15386-contact-api-functors"
+              }
+            ]
+          }
+        }
+      },
+      "lastBuiltRevision": {
+        "SHA1": "fcd9f348d572e34ec820d7f4a1c193fc38f39fb4",
+        "branch": [
+          {
+            "SHA1": "fcd9f348d572e34ec820d7f4a1c193fc38f39fb4",
+            "name": "origin/fb-ROCKY-15386-contact-api-functors"
+          }
+        ]
+      },
+      "remoteUrls": [
+        "ssh://git@eden.fln.esss.com.br:7999/esss/eden.git"
+      ],
+      "scmName": ""
+    },
+    {
+      "_class": "hudson.plugins.git.util.BuildData",
+      "buildsByBranchName": {
+        "origin/fb-ROCKY-15386-contact-api-functors": {
+          "_class": "hudson.plugins.git.util.Build",
+          "buildNumber": 6,
+          "buildResult": null,
+          "marked": {
+            "SHA1": "e40286c8615116fb59a5417e0817b1bc8cdfd54a",
+            "branch": [
+              {
+                "SHA1": "e40286c8615116fb59a5417e0817b1bc8cdfd54a",
+                "name": "origin/fb-ROCKY-15386-contact-api-functors"
+              }
+            ]
+          },
+          "revision": {
+            "SHA1": "e40286c8615116fb59a5417e0817b1bc8cdfd54a",
+            "branch": [
+              {
+                "SHA1": "e40286c8615116fb59a5417e0817b1bc8cdfd54a",
+                "name": "origin/fb-ROCKY-15386-contact-api-functors"
+              }
+            ]
+          }
+        }
+      },
+      "lastBuiltRevision": {
+        "SHA1": "e40286c8615116fb59a5417e0817b1bc8cdfd54a",
+        "branch": [
+          {
+            "SHA1": "e40286c8615116fb59a5417e0817b1bc8cdfd54a",
+            "name": "origin/fb-ROCKY-15386-contact-api-functors"
+          }
+        ]
+      },
+      "remoteUrls": [
+        "ssh://git@eden.fln.esss.com.br:7999/esss/ben10.git"
+      ],
+      "scmName": ""
+    },
+    {
+      "_class": "hudson.plugins.git.util.BuildData",
+      "buildsByBranchName": {
+        "origin/fb-ROCKY-15386-contact-api-functors": {
+          "_class": "hudson.plugins.git.util.Build",
+          "buildNumber": 6,
+          "buildResult": null,
+          "marked": {
+            "SHA1": "81c3be736dd6cc6822525c3330af1380bd4a6fd5",
+            "branch": [
+              {
+                "SHA1": "81c3be736dd6cc6822525c3330af1380bd4a6fd5",
+                "name": "origin/fb-ROCKY-15386-contact-api-functors"
+              }
+            ]
+          },
+          "revision": {
+            "SHA1": "81c3be736dd6cc6822525c3330af1380bd4a6fd5",
+            "branch": [
+              {
+                "SHA1": "81c3be736dd6cc6822525c3330af1380bd4a6fd5",
+                "name": "origin/fb-ROCKY-15386-contact-api-functors"
+              }
+            ]
+          }
+        }
+      },
+      "lastBuiltRevision": {
+        "SHA1": "81c3be736dd6cc6822525c3330af1380bd4a6fd5",
+        "branch": [
+          {
+            "SHA1": "81c3be736dd6cc6822525c3330af1380bd4a6fd5",
+            "name": "origin/fb-ROCKY-15386-contact-api-functors"
+          }
+        ]
+      },
+      "remoteUrls": [
+        "ssh://git@eden.fln.esss.com.br:7999/esss/etk.git"
+      ],
+      "scmName": ""
+    },
+    {
+      "_class": "hudson.plugins.git.util.BuildData",
+      "buildsByBranchName": {
+        "origin/fb-ROCKY-15386-contact-api-functors": {
+          "_class": "hudson.plugins.git.util.Build",
+          "buildNumber": 6,
+          "buildResult": null,
+          "marked": {
+            "SHA1": "260b42703b116330f01a56b66c028451a772cd82",
+            "branch": [
+              {
+                "SHA1": "260b42703b116330f01a56b66c028451a772cd82",
+                "name": "origin/fb-ROCKY-15386-contact-api-functors"
+              }
+            ]
+          },
+          "revision": {
+            "SHA1": "260b42703b116330f01a56b66c028451a772cd82",
+            "branch": [
+              {
+                "SHA1": "260b42703b116330f01a56b66c028451a772cd82",
+                "name": "origin/fb-ROCKY-15386-contact-api-functors"
+              }
+            ]
+          }
+        }
+      },
+      "lastBuiltRevision": {
+        "SHA1": "260b42703b116330f01a56b66c028451a772cd82",
+        "branch": [
+          {
+            "SHA1": "260b42703b116330f01a56b66c028451a772cd82",
+            "name": "origin/fb-ROCKY-15386-contact-api-functors"
+          }
+        ]
+      },
+      "remoteUrls": [
+        "ssh://git@eden.fln.esss.com.br:7999/esss/rocky20_examples.git"
+      ],
+      "scmName": ""
+    },
+    {
+      "_class": "hudson.plugins.git.util.BuildData",
+      "buildsByBranchName": {
+        "origin/fb-ROCKY-15386-contact-api-functors": {
+          "_class": "hudson.plugins.git.util.Build",
+          "buildNumber": 6,
+          "buildResult": null,
+          "marked": {
+            "SHA1": "e6aa804743f2929f4146c8ab13092dec06af6d15",
+            "branch": [
+              {
+                "SHA1": "e6aa804743f2929f4146c8ab13092dec06af6d15",
+                "name": "origin/fb-ROCKY-15386-contact-api-functors"
+              }
+            ]
+          },
+          "revision": {
+            "SHA1": "e6aa804743f2929f4146c8ab13092dec06af6d15",
+            "branch": [
+              {
+                "SHA1": "e6aa804743f2929f4146c8ab13092dec06af6d15",
+                "name": "origin/fb-ROCKY-15386-contact-api-functors"
+              }
+            ]
+          }
+        }
+      },
+      "lastBuiltRevision": {
+        "SHA1": "e6aa804743f2929f4146c8ab13092dec06af6d15",
+        "branch": [
+          {
+            "SHA1": "e6aa804743f2929f4146c8ab13092dec06af6d15",
+            "name": "origin/fb-ROCKY-15386-contact-api-functors"
+          }
+        ]
+      },
+      "remoteUrls": [
+        "ssh://git@eden.fln.esss.com.br:7999/esss/rocky_docs.git"
+      ],
+      "scmName": ""
+    },
+    {
+      "_class": "hudson.plugins.git.util.BuildData",
+      "buildsByBranchName": {
+        "origin/fb-ROCKY-15386-contact-api-functors": {
+          "_class": "hudson.plugins.git.util.Build",
+          "buildNumber": 6,
+          "buildResult": null,
+          "marked": {
+            "SHA1": "2c5a6981d292a4d615491b48ea24a7ba919a1b63",
+            "branch": [
+              {
+                "SHA1": "2c5a6981d292a4d615491b48ea24a7ba919a1b63",
+                "name": "origin/fb-ROCKY-15386-contact-api-functors"
+              }
+            ]
+          },
+          "revision": {
+            "SHA1": "2c5a6981d292a4d615491b48ea24a7ba919a1b63",
+            "branch": [
+              {
+                "SHA1": "2c5a6981d292a4d615491b48ea24a7ba919a1b63",
+                "name": "origin/fb-ROCKY-15386-contact-api-functors"
+              }
+            ]
+          }
+        }
+      },
+      "lastBuiltRevision": {
+        "SHA1": "2c5a6981d292a4d615491b48ea24a7ba919a1b63",
+        "branch": [
+          {
+            "SHA1": "2c5a6981d292a4d615491b48ea24a7ba919a1b63",
+            "name": "origin/fb-ROCKY-15386-contact-api-functors"
+          }
+        ]
+      },
+      "remoteUrls": [
+        "ssh://git@eden.fln.esss.com.br:7999/esss/rocky.git"
+      ],
+      "scmName": ""
+    },
+    {},
+    {
+      "_class": "hudson.tasks.junit.TestResultAction",
+      "failCount": 3,
+      "skipCount": 0,
+      "totalCount": 11,
+      "urlName": "testReport"
+    },
+    {},
+    {},
+    {},
+    {
+      "_class": "org.jenkinsci.plugins.displayurlapi.actions.RunDisplayAction"
+    }
+  ],
+  "artifacts": [],
+  "building": false,
+  "description": null,
+  "displayName": "#6",
+  "duration": 4611379,
+  "estimatedDuration": 4502237,
+  "executor": null,
+  "fullDisplayName": "[fb-ROCKY-15386-contact-api-functors] rocky20 newlinux py36 #6",
+  "id": "6",
+  "keepLog": false,
+  "number": 6,
+  "queueId": 112261,
+  "result": "UNSTABLE",
+  "timestamp": 1658417044957,
+  "url": "https://eden.esss.co/jenkins/job/rocky20-fb-ROCKY-15386-contact-api-functors-esss-benchmark/6/",
+  "builtOn": "dev-centos7-linux-sv02-ci02",
+  "changeSet": {
+    "_class": "org.jenkinsci.plugins.multiplescms.MultiSCMChangeLogSet",
+    "items": [],
+    "kind": "git"
+  },
+  "culprits": [
+    {
+      "absoluteUrl": "https://eden.esss.co/jenkins/user/rtrindade",
+      "fullName": "Rafael Gauna Trindade "
+    }
+  ]
+}
