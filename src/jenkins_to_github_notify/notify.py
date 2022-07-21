@@ -5,6 +5,7 @@ from typing import Sequence
 
 import attr
 import jenkins
+import requests
 
 
 def check_configuration(config: dict[str, str]) -> None:
@@ -94,7 +95,7 @@ _HTTPS_URL = re.compile(r"https://github.com/([\w_-]+)/([\w_-]+)")
 
 def parse_slug(url: str) -> str | None:
     """
-    Parses the GitHub slug from the given HTTPS or SSH URLs.
+    Parses the GitHub slug from the given HTTPS or SSH URLs (a slug is a string in the form "owner/repo").
     If it is not a valid GitHub address returns None.
     """
     if m := _SSH_URL.match(url):
@@ -103,3 +104,58 @@ def parse_slug(url: str) -> str | None:
         return f"{m.group(1)}/{m.group(2)}"
     else:
         return None
+
+
+def post_status_to_github(
+    *,
+    config: dict[str, str],
+    slug: str,
+    commit: str,
+    branch_name: str,
+    job_name: str,
+    job_url: str,
+    job_number: int,
+    status: BuildStatus,
+) -> None:
+    url = f"https://api.github.com/repos/{slug}/statuses/{commit}"
+    job_alias = compute_job_alias(job_name=job_name, branch_name=branch_name)
+    description = f"build #{job_number} {status.value}"
+    json_data = {
+        "state": status.value,
+        "target_url": job_url,
+        "description": description,
+        "context": f"{job_alias} job",
+    }
+    headers = {
+        "Accept": "application/vnd.github+jso",
+        "Authorization": f"token {config['GH_TOKEN']}",
+    }
+    response = requests.post(url=url, json=json_data, headers=headers)
+    if not (200 <= response.status_code < 300):
+        raise RuntimeError(f"ERROR {response.status_code} ({response.json()})")
+
+
+def compute_job_alias(*, job_name: str, branch_name: str) -> str:
+    """
+    Given a full job name and branch name, returns a more compact version
+    to display in the PR.
+
+    For example:
+
+        >>> compute_job_alias("alfasim-fb-EDEN-2505-app-win64", "alfasim/app-win64")
+        "rocky20/esss-benchmark"
+    """
+    origin_prefix = "origin/"
+    if branch_name.startswith(origin_prefix):
+        branch_name = branch_name[len(origin_prefix) :]
+    # Remove branch name from the job name:
+    # "alfasim-fb-EDEN-2505-app-win64" -> "alfasim--app-win64"
+    alias = job_name.replace(branch_name, "")
+    # Change "--" from removing the branch to "/" for a nice visual separation:
+    # "alfasim--app-win64" -> "alfasim/app-win64"
+    alias = alias.replace("--", "/")
+    # Remove any trailing "-" in case the branch is the last part:
+    # "test-repo-fb-EDEN-2505" -> "test-repo-" -> "test-repo"
+    if alias.endswith("-"):
+        alias = alias[:-1]
+    return alias
