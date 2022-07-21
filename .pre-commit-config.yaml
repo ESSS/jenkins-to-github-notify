@@ -1,0 +1,32 @@
+repos:
+-   repo: https://github.com/myint/autoflake
+    rev: v1.4
+    hooks:
+    -   id: autoflake
+        name: autoflake
+        args: ["--in-place", "--remove-unused-variables", "--remove-all-unused-imports"]
+        language: python
+        files: \.py$
+-   repo: https://github.com/asottile/reorder_python_imports
+    rev: v3.8.1
+    hooks:
+    -   id: reorder-python-imports
+        name: "reorder python imports"
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.3.0
+    hooks:
+    -   id: trailing-whitespace
+    -   id: end-of-file-fixer
+-   repo: https://github.com/psf/black
+    rev: 22.6.0
+    hooks:
+    -   id: black
+-   repo: local
+    hooks:
+    -   id: mypy
+        name: mypy
+        files: (\.py|\.pyi)$
+        stages: [commit]
+        language: python
+        entry: "mypy"
+        pass_filenames: false
