@@ -14,8 +14,6 @@ attrs==21.4.0
     # via pytest
 certifi==2022.6.15
     # via requests
-cffi==1.15.1
-    # via cryptography
 cfgv==3.3.1
     # via pre-commit
 charset-normalizer==2.1.0
@@ -26,16 +24,12 @@ colorama==0.4.5
     # via
     #   click
     #   pytest
-cryptography==37.0.4
-    # via pyjwt
 distlib==0.3.5
     # via virtualenv
 fastapi==0.79.0
     # via -r requirements.in
 filelock==3.7.1
     # via virtualenv
-github3-py==3.2.0
-    # via -r requirements.in
 h11==0.13.0
     # via uvicorn
 identify==2.5.2
@@ -46,6 +40,8 @@ idna==3.3
     #   requests
 iniconfig==1.1.1
     # via pytest
+multi-key-dict==2.0.3
+    # via python-jenkins
 mypy==0.971
     # via -r requirements.in
 mypy-extensions==0.4.3
@@ -54,6 +50,8 @@ nodeenv==1.7.0
     # via pre-commit
 packaging==21.3
     # via pytest
+pbr==5.9.0
+    # via python-jenkins
 platformdirs==2.5.2
     # via virtualenv
 pluggy==1.0.0
@@ -62,12 +60,8 @@ pre-commit==2.20.0
     # via -r requirements.in
 py==1.11.0
     # via pytest
-pycparser==2.21
-    # via cffi
 pydantic==1.9.1
     # via fastapi
-pyjwt[crypto]==2.4.0
-    # via github3-py
 pyparsing==3.0.9
     # via packaging
 pytest==7.1.2
@@ -81,19 +75,19 @@ pytest-mock==3.8.2
     # via -r requirements.in
 pytest-regressions==2.3.1
     # via -r requirements.in
-python-dateutil==2.8.2
-    # via github3-py
 python-dotenv==0.20.0
+    # via -r requirements.in
+python-jenkins==1.7.0
     # via -r requirements.in
 pyyaml==6.0
     # via
     #   pre-commit
     #   pytest-regressions
 requests==2.28.1
-    # via github3-py
+    # via python-jenkins
 six==1.16.0
     # via
-    #   python-dateutil
+    #   python-jenkins
     #   virtualenv
 sniffio==1.2.0
     # via anyio
@@ -109,8 +103,6 @@ typing-extensions==4.3.0
     # via
     #   mypy
     #   pydantic
-uritemplate==4.1.1
-    # via github3-py
 urllib3==1.26.10
     # via requests
 uvicorn==0.18.2
