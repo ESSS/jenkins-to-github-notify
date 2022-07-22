@@ -2,11 +2,48 @@
   "_class" : "hudson.model.FreeStyleBuild",
   "actions" : [
     {
+      "_class" : "hudson.model.ParametersAction",
+      "parameters" : [
+        {
+          "_class" : "hudson.model.StringParameterValue",
+          "name" : "BUILD_MODE",
+          "value" : "source"
+        },
+        {
+          "_class" : "hudson.model.StringParameterValue",
+          "name" : "EDEN_SKIP_DEPS_TESTS",
+          "value" : "ben10,simlib,pvtlib,etk,knowmeter"
+        },
+        {
+          "_class" : "hudson.model.StringParameterValue",
+          "name" : "EDEN_FORCE_TESTS",
+          "value" : "none"
+        },
+        {
+          "_class" : "hudson.model.StringParameterValue",
+          "name" : "ESSS_SINGLE_ENV",
+          "value" : "1"
+        },
+        {
+          "_class" : "hudson.model.StringParameterValue",
+          "name" : "ESSS_BIG_CACHE",
+          "value" : "1"
+        },
+        {
+          "_class" : "hudson.model.StringParameterValue",
+          "name" : "ESSS_USE_TEST_CHANNEL",
+          "value" : "0"
+        }
+      ]
+    },
+    {
       "_class" : "hudson.model.CauseAction",
       "causes" : [
         {
-          "_class" : "hudson.triggers.TimerTrigger$TimerTriggerCause",
-          "shortDescription" : "Started by timer"
+          "_class" : "hudson.model.Cause$UserIdCause",
+          "shortDescription" : "Started by user Gustavo Paim Berned",
+          "userId" : "gustavopb",
+          "userName" : "Gustavo Paim Berned"
         }
       ]
     },
@@ -16,36 +53,36 @@
     {
       "_class" : "hudson.plugins.git.util.BuildData",
       "buildsByBranchName" : {
-        "origin/master" : {
+        "origin/fb-ASIM-4742-add-gui-support-esp-catolog" : {
           "_class" : "hudson.plugins.git.util.Build",
-          "buildNumber" : 2179,
+          "buildNumber" : 6,
           "buildResult" : null,
           "marked" : {
-            "SHA1" : "9be65f035ce5af7fe93c8c59f6a174860d152cc5",
+            "SHA1" : "183c3b5d60eb015704eb081d600b79e2c261f3a3",
             "branch" : [
               {
-                "SHA1" : "9be65f035ce5af7fe93c8c59f6a174860d152cc5",
-                "name" : "origin/master"
+                "SHA1" : "183c3b5d60eb015704eb081d600b79e2c261f3a3",
+                "name" : "origin/fb-ASIM-4742-add-gui-support-esp-catolog"
               }
             ]
           },
           "revision" : {
-            "SHA1" : "9be65f035ce5af7fe93c8c59f6a174860d152cc5",
+            "SHA1" : "183c3b5d60eb015704eb081d600b79e2c261f3a3",
             "branch" : [
               {
-                "SHA1" : "9be65f035ce5af7fe93c8c59f6a174860d152cc5",
-                "name" : "origin/master"
+                "SHA1" : "183c3b5d60eb015704eb081d600b79e2c261f3a3",
+                "name" : "origin/fb-ASIM-4742-add-gui-support-esp-catolog"
               }
             ]
           }
         }
       },
       "lastBuiltRevision" : {
-        "SHA1" : "9be65f035ce5af7fe93c8c59f6a174860d152cc5",
+        "SHA1" : "183c3b5d60eb015704eb081d600b79e2c261f3a3",
         "branch" : [
           {
-            "SHA1" : "9be65f035ce5af7fe93c8c59f6a174860d152cc5",
-            "name" : "origin/master"
+            "SHA1" : "183c3b5d60eb015704eb081d600b79e2c261f3a3",
+            "name" : "origin/fb-ASIM-4742-add-gui-support-esp-catolog"
           }
         ]
       },
@@ -53,6 +90,467 @@
         "git@github.com:ESSS/alfasim.git"
       ],
       "scmName" : ""
+    },
+    {
+      "_class" : "hudson.plugins.git.util.BuildData",
+      "buildsByBranchName" : {
+        "origin/fb-ASIM-4742-add-gui-support-esp-catolog" : {
+          "_class" : "hudson.plugins.git.util.Build",
+          "buildNumber" : 6,
+          "buildResult" : null,
+          "marked" : {
+            "SHA1" : "91157844675147441403bf565fbc936b39407afb",
+            "branch" : [
+              {
+                "SHA1" : "91157844675147441403bf565fbc936b39407afb",
+                "name" : "origin/fb-ASIM-4742-add-gui-support-esp-catolog"
+              }
+            ]
+          },
+          "revision" : {
+            "SHA1" : "91157844675147441403bf565fbc936b39407afb",
+            "branch" : [
+              {
+                "SHA1" : "91157844675147441403bf565fbc936b39407afb",
+                "name" : "origin/fb-ASIM-4742-add-gui-support-esp-catolog"
+              }
+            ]
+          }
+        }
+      },
+      "lastBuiltRevision" : {
+        "SHA1" : "91157844675147441403bf565fbc936b39407afb",
+        "branch" : [
+          {
+            "SHA1" : "91157844675147441403bf565fbc936b39407afb",
+            "name" : "origin/fb-ASIM-4742-add-gui-support-esp-catolog"
+          }
+        ]
+      },
+      "remoteUrls" : [
+        "ssh://git@eden.fln.esss.com.br:7999/esss/eden.git"
+      ],
+      "scmName" : ""
+    },
+    {
+      "_class" : "hudson.plugins.git.util.BuildData",
+      "buildsByBranchName" : {
+        "origin/fb-ASIM-4742-add-gui-support-esp-catolog" : {
+          "_class" : "hudson.plugins.git.util.Build",
+          "buildNumber" : 6,
+          "buildResult" : null,
+          "marked" : {
+            "SHA1" : "9790afe2a6f5638941d023f2bf98a5058582e6de",
+            "branch" : [
+              {
+                "SHA1" : "9790afe2a6f5638941d023f2bf98a5058582e6de",
+                "name" : "origin/fb-ASIM-4742-add-gui-support-esp-catolog"
+              }
+            ]
+          },
+          "revision" : {
+            "SHA1" : "9790afe2a6f5638941d023f2bf98a5058582e6de",
+            "branch" : [
+              {
+                "SHA1" : "9790afe2a6f5638941d023f2bf98a5058582e6de",
+                "name" : "origin/fb-ASIM-4742-add-gui-support-esp-catolog"
+              }
+            ]
+          }
+        }
+      },
+      "lastBuiltRevision" : {
+        "SHA1" : "9790afe2a6f5638941d023f2bf98a5058582e6de",
+        "branch" : [
+          {
+            "SHA1" : "9790afe2a6f5638941d023f2bf98a5058582e6de",
+            "name" : "origin/fb-ASIM-4742-add-gui-support-esp-catolog"
+          }
+        ]
+      },
+      "remoteUrls" : [
+        "ssh://git@eden.fln.esss.com.br:7999/esss/simlib.git"
+      ],
+      "scmName" : ""
+    },
+    {
+      "_class" : "hudson.plugins.git.util.BuildData",
+      "buildsByBranchName" : {
+        "origin/fb-ASIM-4742-add-gui-support-esp-catolog" : {
+          "_class" : "hudson.plugins.git.util.Build",
+          "buildNumber" : 6,
+          "buildResult" : null,
+          "marked" : {
+            "SHA1" : "e40286c8615116fb59a5417e0817b1bc8cdfd54a",
+            "branch" : [
+              {
+                "SHA1" : "e40286c8615116fb59a5417e0817b1bc8cdfd54a",
+                "name" : "origin/fb-ASIM-4742-add-gui-support-esp-catolog"
+              }
+            ]
+          },
+          "revision" : {
+            "SHA1" : "e40286c8615116fb59a5417e0817b1bc8cdfd54a",
+            "branch" : [
+              {
+                "SHA1" : "e40286c8615116fb59a5417e0817b1bc8cdfd54a",
+                "name" : "origin/fb-ASIM-4742-add-gui-support-esp-catolog"
+              }
+            ]
+          }
+        }
+      },
+      "lastBuiltRevision" : {
+        "SHA1" : "e40286c8615116fb59a5417e0817b1bc8cdfd54a",
+        "branch" : [
+          {
+            "SHA1" : "e40286c8615116fb59a5417e0817b1bc8cdfd54a",
+            "name" : "origin/fb-ASIM-4742-add-gui-support-esp-catolog"
+          }
+        ]
+      },
+      "remoteUrls" : [
+        "ssh://git@eden.fln.esss.com.br:7999/esss/ben10.git"
+      ],
+      "scmName" : ""
+    },
+    {
+      "_class" : "hudson.plugins.git.util.BuildData",
+      "buildsByBranchName" : {
+        "origin/fb-ASIM-4742-add-gui-support-esp-catolog" : {
+          "_class" : "hudson.plugins.git.util.Build",
+          "buildNumber" : 6,
+          "buildResult" : null,
+          "marked" : {
+            "SHA1" : "59ec1917cdf9891b1043280309d19ab651bb98dd",
+            "branch" : [
+              {
+                "SHA1" : "59ec1917cdf9891b1043280309d19ab651bb98dd",
+                "name" : "origin/fb-ASIM-4742-add-gui-support-esp-catolog"
+              }
+            ]
+          },
+          "revision" : {
+            "SHA1" : "59ec1917cdf9891b1043280309d19ab651bb98dd",
+            "branch" : [
+              {
+                "SHA1" : "59ec1917cdf9891b1043280309d19ab651bb98dd",
+                "name" : "origin/fb-ASIM-4742-add-gui-support-esp-catolog"
+              }
+            ]
+          }
+        }
+      },
+      "lastBuiltRevision" : {
+        "SHA1" : "59ec1917cdf9891b1043280309d19ab651bb98dd",
+        "branch" : [
+          {
+            "SHA1" : "59ec1917cdf9891b1043280309d19ab651bb98dd",
+            "name" : "origin/fb-ASIM-4742-add-gui-support-esp-catolog"
+          }
+        ]
+      },
+      "remoteUrls" : [
+        "ssh://git@eden.fln.esss.com.br:7999/esss/etk.git"
+      ],
+      "scmName" : ""
+    },
+    {
+      "_class" : "hudson.plugins.git.util.BuildData",
+      "buildsByBranchName" : {
+        "origin/fb-ASIM-4742-add-gui-support-esp-catolog" : {
+          "_class" : "hudson.plugins.git.util.Build",
+          "buildNumber" : 6,
+          "buildResult" : null,
+          "marked" : {
+            "SHA1" : "3906a2350db4d0232aebfe16b3299f600369281d",
+            "branch" : [
+              {
+                "SHA1" : "3906a2350db4d0232aebfe16b3299f600369281d",
+                "name" : "origin/fb-ASIM-4742-add-gui-support-esp-catolog"
+              }
+            ]
+          },
+          "revision" : {
+            "SHA1" : "3906a2350db4d0232aebfe16b3299f600369281d",
+            "branch" : [
+              {
+                "SHA1" : "3906a2350db4d0232aebfe16b3299f600369281d",
+                "name" : "origin/fb-ASIM-4742-add-gui-support-esp-catolog"
+              }
+            ]
+          }
+        }
+      },
+      "lastBuiltRevision" : {
+        "SHA1" : "3906a2350db4d0232aebfe16b3299f600369281d",
+        "branch" : [
+          {
+            "SHA1" : "3906a2350db4d0232aebfe16b3299f600369281d",
+            "name" : "origin/fb-ASIM-4742-add-gui-support-esp-catolog"
+          }
+        ]
+      },
+      "remoteUrls" : [
+        "ssh://git@eden.fln.esss.com.br:7999/esss/knowmeter.git"
+      ],
+      "scmName" : ""
+    },
+    {
+      "_class" : "hudson.plugins.git.util.BuildData",
+      "buildsByBranchName" : {
+        "origin/fb-ASIM-4742-add-gui-support-esp-catolog" : {
+          "_class" : "hudson.plugins.git.util.Build",
+          "buildNumber" : 6,
+          "buildResult" : null,
+          "marked" : {
+            "SHA1" : "3a93b466b35fa703897d0d35fe93f12ea027da90",
+            "branch" : [
+              {
+                "SHA1" : "3a93b466b35fa703897d0d35fe93f12ea027da90",
+                "name" : "origin/fb-ASIM-4742-add-gui-support-esp-catolog"
+              }
+            ]
+          },
+          "revision" : {
+            "SHA1" : "3a93b466b35fa703897d0d35fe93f12ea027da90",
+            "branch" : [
+              {
+                "SHA1" : "3a93b466b35fa703897d0d35fe93f12ea027da90",
+                "name" : "origin/fb-ASIM-4742-add-gui-support-esp-catolog"
+              }
+            ]
+          }
+        }
+      },
+      "lastBuiltRevision" : {
+        "SHA1" : "3a93b466b35fa703897d0d35fe93f12ea027da90",
+        "branch" : [
+          {
+            "SHA1" : "3a93b466b35fa703897d0d35fe93f12ea027da90",
+            "name" : "origin/fb-ASIM-4742-add-gui-support-esp-catolog"
+          }
+        ]
+      },
+      "remoteUrls" : [
+        "ssh://git@github.com/ESSS/qmxgraph.git"
+      ],
+      "scmName" : ""
+    },
+    {
+      "_class" : "hudson.plugins.git.util.BuildData",
+      "buildsByBranchName" : {
+        "origin/fb-ASIM-4742-add-gui-support-esp-catolog" : {
+          "_class" : "hudson.plugins.git.util.Build",
+          "buildNumber" : 6,
+          "buildResult" : null,
+          "marked" : {
+            "SHA1" : "4a7af78b5dc6d1bdd820ccea9c12beb07a113d13",
+            "branch" : [
+              {
+                "SHA1" : "4a7af78b5dc6d1bdd820ccea9c12beb07a113d13",
+                "name" : "origin/fb-ASIM-4742-add-gui-support-esp-catolog"
+              }
+            ]
+          },
+          "revision" : {
+            "SHA1" : "4a7af78b5dc6d1bdd820ccea9c12beb07a113d13",
+            "branch" : [
+              {
+                "SHA1" : "4a7af78b5dc6d1bdd820ccea9c12beb07a113d13",
+                "name" : "origin/fb-ASIM-4742-add-gui-support-esp-catolog"
+              }
+            ]
+          }
+        }
+      },
+      "lastBuiltRevision" : {
+        "SHA1" : "4a7af78b5dc6d1bdd820ccea9c12beb07a113d13",
+        "branch" : [
+          {
+            "SHA1" : "4a7af78b5dc6d1bdd820ccea9c12beb07a113d13",
+            "name" : "origin/fb-ASIM-4742-add-gui-support-esp-catolog"
+          }
+        ]
+      },
+      "remoteUrls" : [
+        "ssh://git@github.com/ESSS/hookman.git"
+      ],
+      "scmName" : ""
+    },
+    {
+      "_class" : "hudson.plugins.git.util.BuildData",
+      "buildsByBranchName" : {
+        "origin/fb-ASIM-4742-add-gui-support-esp-catolog" : {
+          "_class" : "hudson.plugins.git.util.Build",
+          "buildNumber" : 6,
+          "buildResult" : null,
+          "marked" : {
+            "SHA1" : "de93939e21c4c942e2d0ad00d017c1df15b8f3ab",
+            "branch" : [
+              {
+                "SHA1" : "de93939e21c4c942e2d0ad00d017c1df15b8f3ab",
+                "name" : "origin/fb-ASIM-4742-add-gui-support-esp-catolog"
+              }
+            ]
+          },
+          "revision" : {
+            "SHA1" : "de93939e21c4c942e2d0ad00d017c1df15b8f3ab",
+            "branch" : [
+              {
+                "SHA1" : "de93939e21c4c942e2d0ad00d017c1df15b8f3ab",
+                "name" : "origin/fb-ASIM-4742-add-gui-support-esp-catolog"
+              }
+            ]
+          }
+        }
+      },
+      "lastBuiltRevision" : {
+        "SHA1" : "de93939e21c4c942e2d0ad00d017c1df15b8f3ab",
+        "branch" : [
+          {
+            "SHA1" : "de93939e21c4c942e2d0ad00d017c1df15b8f3ab",
+            "name" : "origin/fb-ASIM-4742-add-gui-support-esp-catolog"
+          }
+        ]
+      },
+      "remoteUrls" : [
+        "ssh://git@github.com/ESSS/alfasim-sdk.git"
+      ],
+      "scmName" : ""
+    },
+    {
+      "_class" : "hudson.plugins.git.util.BuildData",
+      "buildsByBranchName" : {
+        "origin/fb-ASIM-4742-add-gui-support-esp-catolog" : {
+          "_class" : "hudson.plugins.git.util.Build",
+          "buildNumber" : 6,
+          "buildResult" : null,
+          "marked" : {
+            "SHA1" : "faaea8c5f4f004eb3eb594fb55d8051b481a88d4",
+            "branch" : [
+              {
+                "SHA1" : "faaea8c5f4f004eb3eb594fb55d8051b481a88d4",
+                "name" : "origin/fb-ASIM-4742-add-gui-support-esp-catolog"
+              }
+            ]
+          },
+          "revision" : {
+            "SHA1" : "faaea8c5f4f004eb3eb594fb55d8051b481a88d4",
+            "branch" : [
+              {
+                "SHA1" : "faaea8c5f4f004eb3eb594fb55d8051b481a88d4",
+                "name" : "origin/fb-ASIM-4742-add-gui-support-esp-catolog"
+              }
+            ]
+          }
+        }
+      },
+      "lastBuiltRevision" : {
+        "SHA1" : "faaea8c5f4f004eb3eb594fb55d8051b481a88d4",
+        "branch" : [
+          {
+            "SHA1" : "faaea8c5f4f004eb3eb594fb55d8051b481a88d4",
+            "name" : "origin/fb-ASIM-4742-add-gui-support-esp-catolog"
+          }
+        ]
+      },
+      "remoteUrls" : [
+        "ssh://git@eden.fln.esss.com.br:7999/esss/pvtlib.git"
+      ],
+      "scmName" : ""
+    },
+    {
+      "_class" : "hudson.plugins.git.util.BuildData",
+      "buildsByBranchName" : {
+        "origin/fb-ASIM-4742-add-gui-support-esp-catolog" : {
+          "_class" : "hudson.plugins.git.util.Build",
+          "buildNumber" : 6,
+          "buildResult" : null,
+          "marked" : {
+            "SHA1" : "6ad2b7fe8ca81165a8571311be6419ee554ab0c3",
+            "branch" : [
+              {
+                "SHA1" : "6ad2b7fe8ca81165a8571311be6419ee554ab0c3",
+                "name" : "origin/fb-ASIM-4742-add-gui-support-esp-catolog"
+              }
+            ]
+          },
+          "revision" : {
+            "SHA1" : "6ad2b7fe8ca81165a8571311be6419ee554ab0c3",
+            "branch" : [
+              {
+                "SHA1" : "6ad2b7fe8ca81165a8571311be6419ee554ab0c3",
+                "name" : "origin/fb-ASIM-4742-add-gui-support-esp-catolog"
+              }
+            ]
+          }
+        }
+      },
+      "lastBuiltRevision" : {
+        "SHA1" : "6ad2b7fe8ca81165a8571311be6419ee554ab0c3",
+        "branch" : [
+          {
+            "SHA1" : "6ad2b7fe8ca81165a8571311be6419ee554ab0c3",
+            "name" : "origin/fb-ASIM-4742-add-gui-support-esp-catolog"
+          }
+        ]
+      },
+      "remoteUrls" : [
+        "ssh://git@eden.fln.esss.com.br:7999/esss/welllib.git"
+      ],
+      "scmName" : ""
+    },
+    {
+      "_class" : "hudson.plugins.git.util.BuildData",
+      "buildsByBranchName" : {
+        "origin/fb-ASIM-4742-add-gui-support-esp-catolog" : {
+          "_class" : "hudson.plugins.git.util.Build",
+          "buildNumber" : 6,
+          "buildResult" : null,
+          "marked" : {
+            "SHA1" : "db65b5bd9486ef2bc5cef14021b038cec8d5345b",
+            "branch" : [
+              {
+                "SHA1" : "db65b5bd9486ef2bc5cef14021b038cec8d5345b",
+                "name" : "origin/fb-ASIM-4742-add-gui-support-esp-catolog"
+              }
+            ]
+          },
+          "revision" : {
+            "SHA1" : "db65b5bd9486ef2bc5cef14021b038cec8d5345b",
+            "branch" : [
+              {
+                "SHA1" : "db65b5bd9486ef2bc5cef14021b038cec8d5345b",
+                "name" : "origin/fb-ASIM-4742-add-gui-support-esp-catolog"
+              }
+            ]
+          }
+        }
+      },
+      "lastBuiltRevision" : {
+        "SHA1" : "db65b5bd9486ef2bc5cef14021b038cec8d5345b",
+        "branch" : [
+          {
+            "SHA1" : "db65b5bd9486ef2bc5cef14021b038cec8d5345b",
+            "name" : "origin/fb-ASIM-4742-add-gui-support-esp-catolog"
+          }
+        ]
+      },
+      "remoteUrls" : [
+        "ssh://git@eden.fln.esss.com.br:7999/esss/alfasim_plugin_hydrates.git"
+      ],
+      "scmName" : ""
+    },
+    {
+
+    },
+    {
+      "_class" : "hudson.tasks.junit.TestResultAction",
+      "failCount" : 0,
+      "skipCount" : 11,
+      "totalCount" : 1466,
+      "urlName" : "testReport"
     },
     {
 
@@ -75,27 +573,57 @@
   ],
   "building" : false,
   "description" : null,
-  "displayName" : "#2179",
-  "duration" : 162232,
-  "estimatedDuration" : 14523335,
+  "displayName" : "#6",
+  "duration" : 1878800,
+  "estimatedDuration" : 1708386,
   "executor" : null,
-  "fullDisplayName" : "[master] alfasim app win64 #2179",
-  "id" : "2179",
+  "fullDisplayName" : "[fb-ASIM-4742-add-gui-support-esp-catolog] alfasim app newlinux #6",
+  "id" : "6",
   "keepLog" : false,
-  "number" : 2179,
-  "queueId" : 111948,
-  "result" : "FAILURE",
-  "timestamp" : 1658371320137,
-  "url" : "https://eden.esss.co/jenkins/view/ALFAsim/job/alfasim-master-app-win64/2179/",
-  "builtOn" : "dev-windows10-win-sv04-ci02",
+  "number" : 6,
+  "queueId" : 111689,
+  "result" : "SUCCESS",
+  "timestamp" : 1658341545734,
+  "url" : "https://eden.esss.co/jenkins/job/alfasim-fb-ASIM-4742-add-gui-support-esp-catolog-app-newlinux/6/",
+  "builtOn" : "dev-centos7-linux-sv04-ci01",
   "changeSet" : {
-    "_class" : "hudson.scm.EmptyChangeLogSet",
+    "_class" : "org.jenkinsci.plugins.multiplescms.MultiSCMChangeLogSet",
     "items" : [
-
+      {
+        "_class" : "hudson.plugins.git.GitChangeSet",
+        "affectedPaths" : [
+          "alfasim_gui/source/python/alfasim_gui/gui/esp_catalog_window.xgui2",
+          "alfasim_gui/docs/tooltips/esp_select_manufacturer_list.rst"
+        ],
+        "commitId" : "183c3b5d60eb015704eb081d600b79e2c261f3a3",
+        "timestamp" : 1658341517000,
+        "author" : {
+          "absoluteUrl" : "https://eden.esss.co/jenkins/user/gustavopb",
+          "fullName" : "Gustavo Paim Berned"
+        },
+        "authorEmail" : "gustavopb@esss.co",
+        "comment" : "Fix xgui tooltip\u000a",
+        "date" : "2022-07-20 15:25:17 -0300",
+        "id" : "183c3b5d60eb015704eb081d600b79e2c261f3a3",
+        "msg" : "Fix xgui tooltip",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "alfasim_gui/docs/tooltips/esp_select_manufacturer_list.rst"
+          },
+          {
+            "editType" : "edit",
+            "file" : "alfasim_gui/source/python/alfasim_gui/gui/esp_catalog_window.xgui2"
+          }
+        ]
+      }
     ],
-    "kind" : null
+    "kind" : "git"
   },
   "culprits" : [
-
+    {
+      "absoluteUrl" : "https://eden.esss.co/jenkins/user/gustavopb",
+      "fullName" : "Gustavo Paim Berned"
+    }
   ]
 }

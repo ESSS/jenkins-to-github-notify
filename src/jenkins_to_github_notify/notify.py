@@ -49,13 +49,24 @@ class BuildStatus(Enum):
     Failure = "failure"
 
 
+@attr.s(auto_attribs=True, frozen=True, kw_only=True)
+class RepoBuildInfo:
+    """
+    Information about a repository that is part of job run.
+    """
+
+    slug: str
+    branch_name: str
+    commit: str
+
+
 @attr.s(auto_attribs=True, frozen=True)
 class JobBuildInfo:
     """
-    Information about a Jenkins job, in the context of this service.
+    Information about a Jenkins job.
     """
 
-    slugs_and_commits: Sequence[tuple[str, str]]
+    repo_infos: Sequence[RepoBuildInfo]
     status: BuildStatus
 
 
@@ -68,7 +79,7 @@ def fetch_build_info(config: dict[str, str], job_name: str, number: int) -> JobB
     )
     response_data = server.get_build_info(job_name, number=number)
 
-    slugs_and_commits = []
+    repo_infos = []
     for action in response_data.get("actions", []):
         if action.get("_class", "") != "hudson.plugins.git.util.BuildData":
             continue
@@ -77,8 +88,10 @@ def fetch_build_info(config: dict[str, str], job_name: str, number: int) -> JobB
             continue
         for remote_url in remote_urls:
             if slug := parse_slug(remote_url):
-                commit = action["lastBuiltRevision"]["SHA1"]
-                slugs_and_commits.append((slug, commit))
+                branch_data = action["lastBuiltRevision"]["branch"][0]
+                branch_name = branch_data["name"].removeprefix("origin/")
+                commit = branch_data["SHA1"]
+                repo_infos.append(RepoBuildInfo(slug=slug, commit=commit, branch_name=branch_name))
     job_result = response_data.get("result", "")
     if job_result is None:
         status = BuildStatus.Pending
@@ -86,7 +99,7 @@ def fetch_build_info(config: dict[str, str], job_name: str, number: int) -> JobB
         status = BuildStatus.Success
     else:
         status = BuildStatus.Failure
-    return JobBuildInfo(slugs_and_commits, status)
+    return JobBuildInfo(repo_infos, status)
 
 
 def parse_slug(url: str) -> str | None:
@@ -94,7 +107,7 @@ def parse_slug(url: str) -> str | None:
     Parses the GitHub slug from the given HTTPS or SSH URLs (a slug is a string in the form "owner/repo").
     If it is not a valid GitHub address returns None.
     """
-    if m := re.match(r"git@github.com:([\w_-]+)/([\w_-]+)\.git", url):
+    if m := re.match(r"(?:ssh://)?git@github.com[:/]([\w_-]+)/([\w_-]+)\.git", url):
         return f"{m.group(1)}/{m.group(2)}"
     elif m := re.match(r"https://github.com/([\w_-]+)/([\w_-]+)", url):
         return f"{m.group(1)}/{m.group(2)}"
@@ -110,15 +123,15 @@ def post_status_to_github(
     branch_name: str,
     job_name: str,
     job_url: str,
-    job_number: int,
+    build_number: int,
     status: BuildStatus,
 ) -> None:
     url = f"https://api.github.com/repos/{slug}/statuses/{commit}"
     job_alias = compute_job_alias(job_name=job_name, branch_name=branch_name)
-    description = f"build #{job_number} {status.value}"
+    description = f"build #{build_number} {status.value}"
     json_data = {
         "state": status.value,
-        "target_url": job_url,
+        "target_url": config["JENKINS_URL"] + "/" + job_url,
         "description": description,
         "context": f"{job_alias} job",
     }

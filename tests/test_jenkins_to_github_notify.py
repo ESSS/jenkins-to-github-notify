@@ -6,12 +6,14 @@ from pathlib import Path
 import jenkins
 import pytest
 import requests
+from jenkins_to_github_notify.app import handle_jenkins_notification
 from jenkins_to_github_notify.notify import BuildStatus
 from jenkins_to_github_notify.notify import check_configuration
 from jenkins_to_github_notify.notify import compute_job_alias
 from jenkins_to_github_notify.notify import fetch_build_info
 from jenkins_to_github_notify.notify import parse_slug
 from jenkins_to_github_notify.notify import post_status_to_github
+from jenkins_to_github_notify.notify import RepoBuildInfo
 from jenkins_to_github_notify.notify import validate_event
 from jenkins_to_github_notify.notify import validate_secret
 from pytest_mock import MockerFixture
@@ -52,8 +54,8 @@ def test_validate_secret() -> None:
 @pytest.mark.parametrize(
     "json_name, expected_status",
     [
-        ("jenkins-response-1.json", BuildStatus.Failure),
-        ("jenkins-response-2.json", BuildStatus.Success),
+        ("jenkins-response-1.json", BuildStatus.Success),
+        ("jenkins-response-2.json", BuildStatus.Failure),
         ("jenkins-response-3.json", BuildStatus.Pending),
     ],
 )
@@ -64,12 +66,34 @@ def test_fetch_build_status(
     expected_status: BuildStatus,
     mocker: MockerFixture,
 ) -> None:
+    job_name = "alfasim-fb-ASIM-4742-add-gui-support-esp-catolog-app-newlinux"
+    build_number = 6
     with mocking_jenkins_build_info(
-        mocker, datadir / json_name, fake_config, "alfasim-master-app-win64", 2179
+        mocker, datadir / json_name, fake_config, job_name, build_number
     ):
-        result = fetch_build_info(fake_config, "alfasim-master-app-win64", 2179)
-        assert list(result.slugs_and_commits) == [
-            ("ESSS/alfasim", "9be65f035ce5af7fe93c8c59f6a174860d152cc5"),
+        result = fetch_build_info(fake_config, job_name, build_number)
+        branch_name = "fb-ASIM-4742-add-gui-support-esp-catolog"
+        assert list(result.repo_infos) == [
+            RepoBuildInfo(
+                slug="ESSS/alfasim",
+                branch_name=branch_name,
+                commit="183c3b5d60eb015704eb081d600b79e2c261f3a3",
+            ),
+            RepoBuildInfo(
+                slug="ESSS/qmxgraph",
+                branch_name=branch_name,
+                commit="3a93b466b35fa703897d0d35fe93f12ea027da90",
+            ),
+            RepoBuildInfo(
+                slug="ESSS/hookman",
+                branch_name=branch_name,
+                commit="4a7af78b5dc6d1bdd820ccea9c12beb07a113d13",
+            ),
+            RepoBuildInfo(
+                slug="ESSS/alfasim-sdk",
+                branch_name=branch_name,
+                commit="de93939e21c4c942e2d0ad00d017c1df15b8f3ab",
+            ),
         ]
         assert result.status is expected_status
 
@@ -87,13 +111,14 @@ def test_fetch_build_status_no_github_repos(
         result = fetch_build_info(
             fake_config, "rocky20-fb-ROCKY-15386-contact-api-functors-esss-benchmark", 6
         )
-        assert list(result.slugs_and_commits) == []
+        assert list(result.repo_infos) == []
         assert result.status is BuildStatus.Failure
 
 
 @pytest.mark.parametrize(
     "input_url, expected_url",
     [
+        ("ssh://git@github.com/ESSS/qmxgraph.git", "ESSS/qmxgraph"),
         ("git@github.com:ESSS/alfasim-sdk.git", "ESSS/alfasim-sdk"),
         ("https://github.com/ESSS/alfasim-sdk", "ESSS/alfasim-sdk"),
         ("git@github.com:ESSS/alfasim_sdk.git", "ESSS/alfasim_sdk"),
@@ -130,8 +155,8 @@ def test_post_status_to_github(
             commit="80fd371bb50211b938afa7fa7c04f7b0f5fefecb",
             branch_name="fb-EDEN-2506-github-notification",
             job_name="test-code-cov-fb-EDEN-2506-github-notification-newlinux",
-            job_url="https://eden.esss.co/jenkins/job/test-code-cov-fb-EDEN-2506-github-notification-newlinux/8",
-            job_number=8,
+            job_url="job/test-code-cov-fb-EDEN-2506-github-notification-newlinux/8",
+            build_number=8,
             status=BuildStatus.Success,
         )
     url = f"https://api.github.com/repos/ESSS/test-code-cov/statuses/80fd371bb50211b938afa7fa7c04f7b0f5fefecb"
@@ -139,7 +164,7 @@ def test_post_status_to_github(
     description = f"build #8 success"
     json_data = {
         "state": "success",
-        "target_url": "https://eden.esss.co/jenkins/job/test-code-cov-fb-EDEN-2506-github-notification-newlinux/8",
+        "target_url": "FAKE_JENKINS_URL/job/test-code-cov-fb-EDEN-2506-github-notification-newlinux/8",
         "description": description,
         "context": f"{job_alias} job",
     }
@@ -168,6 +193,63 @@ def test_post_status_to_github(
 )
 def test_compute_job_alias(job_name: str, branch_name: str, expected_alias: str) -> None:
     assert compute_job_alias(job_name=job_name, branch_name=branch_name) == expected_alias
+
+
+def test_handle_jenkins_notification(
+    mocker: MockerFixture, fake_config: dict[str, str], datadir: Path
+) -> None:
+    """Integration test for the main endpoint."""
+    import jenkins_to_github_notify.app
+
+    job_name = "alfasim-fb-ASIM-4742-add-gui-support-esp-catolog-app-newlinux"
+    build_number = 6
+
+    with mocking_jenkins_build_info(
+        mocker, datadir / "jenkins-response-1.json", fake_config, job_name, 6
+    ):
+        post_mock = mocker.patch.object(requests, "post")
+        post_mock.return_value.status_code = 200
+
+        mocker.patch.dict(jenkins_to_github_notify.app.config, values=fake_config, clear=True)
+
+        handle_jenkins_notification(
+            secret=fake_config["JENKINS_SECRET"],
+            event="jenkins.job.started",
+            job_name=job_name,
+            build_number=build_number,
+            url=f"job/{job_name}/{build_number}",
+        )
+
+    headers = {"Accept": "application/vnd.github+jso", "Authorization": "token FAKE_GH_TOKEN"}
+    json = {
+        "state": "success",
+        "target_url": "FAKE_JENKINS_URL/job/alfasim-fb-ASIM-4742-add-gui-support-esp-catolog-app-newlinux/6",
+        "description": "build #6 success",
+        "context": "alfasim/app-newlinux job",
+    }
+    url_prefix = "https://api.github.com/repos/ESSS"
+    assert post_mock.call_args_list == [
+        mocker.call(
+            url=f"{url_prefix}/alfasim/statuses/183c3b5d60eb015704eb081d600b79e2c261f3a3",
+            json=json,
+            headers=headers,
+        ),
+        mocker.call(
+            url=f"{url_prefix}/qmxgraph/statuses/3a93b466b35fa703897d0d35fe93f12ea027da90",
+            json=json,
+            headers=headers,
+        ),
+        mocker.call(
+            url=f"{url_prefix}/hookman/statuses/4a7af78b5dc6d1bdd820ccea9c12beb07a113d13",
+            json=json,
+            headers=headers,
+        ),
+        mocker.call(
+            url=f"{url_prefix}/alfasim-sdk/statuses/de93939e21c4c942e2d0ad00d017c1df15b8f3ab",
+            json=json,
+            headers=headers,
+        ),
+    ]
 
 
 @contextmanager
