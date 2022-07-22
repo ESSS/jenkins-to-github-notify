@@ -89,18 +89,14 @@ def fetch_build_info(config: dict[str, str], job_name: str, number: int) -> JobB
     return JobBuildInfo(slugs_and_commits, status)
 
 
-_SSH_URL = re.compile(r"git@github.com:([\w_-]+)/([\w_-]+)\.git")
-_HTTPS_URL = re.compile(r"https://github.com/([\w_-]+)/([\w_-]+)")
-
-
 def parse_slug(url: str) -> str | None:
     """
     Parses the GitHub slug from the given HTTPS or SSH URLs (a slug is a string in the form "owner/repo").
     If it is not a valid GitHub address returns None.
     """
-    if m := _SSH_URL.match(url):
+    if m := re.match(r"git@github.com:([\w_-]+)/([\w_-]+)\.git", url):
         return f"{m.group(1)}/{m.group(2)}"
-    elif m := _HTTPS_URL.match(url):
+    elif m := re.match(r"https://github.com/([\w_-]+)/([\w_-]+)", url):
         return f"{m.group(1)}/{m.group(2)}"
     else:
         return None
@@ -142,8 +138,8 @@ def compute_job_alias(*, job_name: str, branch_name: str) -> str:
 
     For example:
 
-        >>> compute_job_alias("alfasim-fb-EDEN-2505-app-win64", "alfasim/app-win64")
-        "rocky20/esss-benchmark"
+        >>> compute_job_alias(job_name="alfasim-fb-EDEN-2505-app-win64", branch_name="fb-EDEN-2505")
+        "alfasim/app-win64"
     """
     origin_prefix = "origin/"
     if branch_name.startswith(origin_prefix):
@@ -156,6 +152,5 @@ def compute_job_alias(*, job_name: str, branch_name: str) -> str:
     alias = alias.replace("--", "/")
     # Remove any trailing "-" in case the branch is the last part:
     # "test-repo-fb-EDEN-2505" -> "test-repo-" -> "test-repo"
-    if alias.endswith("-"):
-        alias = alias[:-1]
+    alias = alias.rstrip("-")
     return alias
