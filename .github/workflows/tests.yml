@@ -1,7 +1,7 @@
 name: tests
 
 on:
-  push:  
+  push:
 
 permissions:
   contents: read
@@ -21,7 +21,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install pip-tools
-        pip-sync        
+        pip-sync
     - name: Tests
       run: |
-        pytest
+        pytest --color=yes

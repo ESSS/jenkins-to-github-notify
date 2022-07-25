@@ -1,0 +1,9 @@
+-e file:.#egg=jenkins_to_github_notify
+fastapi
+mypy
+pre-commit
+pytest-mock
+pytest-regressions
+python-dotenv
+python-jenkins
+uvicorn
