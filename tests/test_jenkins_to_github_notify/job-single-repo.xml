@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?><project>
+  <description>&lt;!-- Managed by Job's Done --&gt;</description>
+  <keepDependencies>false</keepDependencies>
+  <logRotator>
+    <daysToKeep>7</daysToKeep>
+    <numToKeep>-1</numToKeep>
+    <artifactDaysToKeep>-1</artifactDaysToKeep>
+    <artifactNumToKeep>-1</artifactNumToKeep>
+  </logRotator>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <concurrentBuild>false</concurrentBuild>
+  <canRoam>false</canRoam>
+  <scm class="hudson.plugins.git.GitSCM">
+    <configVersion>2</configVersion>
+    <relativeTargetDir>eden</relativeTargetDir>
+    <userRemoteConfigs>
+      <hudson.plugins.git.UserRemoteConfig>
+        <url>ssh://git@eden.fln.esss.com.br:7999/esss/eden.git</url>
+      </hudson.plugins.git.UserRemoteConfig>
+    </userRemoteConfigs>
+    <branches>
+      <hudson.plugins.git.BranchSpec>
+        <name>master</name>
+      </hudson.plugins.git.BranchSpec>
+    </branches>
+    <extensions>
+      <hudson.plugins.git.extensions.impl.LocalBranch>
+        <localBranch>master</localBranch>
+      </hudson.plugins.git.extensions.impl.LocalBranch>
+      <hudson.plugins.git.extensions.impl.CloneOption>
+        <noTags>true</noTags>
+        <reference>$WORKSPACE/../../Shared/ref_repos/eden</reference>
+      </hudson.plugins.git.extensions.impl.CloneOption>
+      <hudson.plugins.git.extensions.impl.CleanCheckout/>
+      <hudson.plugins.git.extensions.impl.GitLFSPull/>
+    </extensions>
+    <localBranch>master</localBranch>
+  </scm>
+  <assignedNode>newlinux</assignedNode>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>export CONDA_PY=310
+cd eden
+source $WORKSPACE/eden/bin/setup_slave $WORKSPACE/eden/dev_environment.devenv.yml _eden-dev-py310
+conda list
+inv --list
+inv ci-build
+# NOTE: If the above call fails because eden couldn't bootstrap itself, you can try running
+# the tests directly with:
+# pytest -ra -l --junitxml=build/tests/pytests.xml --cov=source/python --cov-report=xml:build/tests/coverage.xml --color=yes --basetemp="$WORKSPACE/eden/tmp" -n auto source/python -o junit_family=xunit2
+inv publish-coverage
+</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <buildWrappers>
+    <hudson.plugins.ansicolor.AnsiColorBuildWrapper plugin="ansicolor@0.4.2">
+      <colorMapName>xterm</colorMapName>
+    </hudson.plugins.ansicolor.AnsiColorBuildWrapper>
+    <hudson.plugins.ws__cleanup.PreBuildCleanup>
+      <patterns>
+        <hudson.plugins.ws__cleanup.Pattern>
+          <pattern>**/build/tests/pytest*.xml</pattern>
+          <type>INCLUDE</type>
+        </hudson.plugins.ws__cleanup.Pattern>
+      </patterns>
+    </hudson.plugins.ws__cleanup.PreBuildCleanup>
+    <hudson.plugins.build__timeout.BuildTimeoutWrapper>
+      <timeoutMinutes>20</timeoutMinutes>
+      <failBuild>true</failBuild>
+    </hudson.plugins.build__timeout.BuildTimeoutWrapper>
+    <hudson.plugins.timestamper.TimestamperBuildWrapper plugin="timestamper@1.7.4"/>
+  </buildWrappers>
+  <triggers>
+    <hudson.triggers.TimerTrigger>
+      <spec># Run preferably after the daily provision jobs
+30 13 * * *
+</spec>
+    </hudson.triggers.TimerTrigger>
+    <hudson.triggers.SCMTrigger>
+      <spec>H 2-20/1 * * *
+</spec>
+    </hudson.triggers.SCMTrigger>
+  </triggers>
+  <displayName>[master] eden newlinux py310</displayName>
+  <publishers>
+    <xunit>
+      <thresholds>
+        <org.jenkinsci.plugins.xunit.threshold.FailedThreshold>
+          <unstableThreshold>0</unstableThreshold>
+          <unstableNewThreshold>0</unstableNewThreshold>
+        </org.jenkinsci.plugins.xunit.threshold.FailedThreshold>
+      </thresholds>
+      <thresholdMode>1</thresholdMode>
+      <tools>
+        <JUnitType>
+          <pattern>**/build/tests/pytest*.xml</pattern>
+          <skipNoTestFiles>true</skipNoTestFiles>
+          <failIfNotNew>false</failIfNotNew>
+          <deleteOutputFiles>true</deleteOutputFiles>
+          <stopProcessingIfError>true</stopProcessingIfError>
+        </JUnitType>
+      </tools>
+    </xunit>
+    <hudson.tasks.Mailer>
+      <recipients>dev-ci@esss.co</recipients>
+      <dontNotifyEveryUnstableBuild>true</dontNotifyEveryUnstableBuild>
+      <sendToIndividuals>false</sendToIndividuals>
+    </hudson.tasks.Mailer>
+  </publishers>
+</project>

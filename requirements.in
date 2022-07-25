@@ -1,5 +1,6 @@
 -e file:.#egg=jenkins_to_github_notify
 fastapi
+github3.py
 mypy
 pre-commit
 pytest-mock
