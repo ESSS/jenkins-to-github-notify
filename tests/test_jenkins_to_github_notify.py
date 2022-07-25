@@ -3,6 +3,7 @@ from contextlib import contextmanager
 from contextlib import nullcontext
 from pathlib import Path
 
+import github3
 import jenkins
 import pytest
 import requests
@@ -11,6 +12,8 @@ from jenkins_to_github_notify.notify import BuildStatus
 from jenkins_to_github_notify.notify import check_configuration
 from jenkins_to_github_notify.notify import compute_job_alias
 from jenkins_to_github_notify.notify import fetch_build_info
+from jenkins_to_github_notify.notify import fetch_repo_infos_based_on_job_xml_config
+from jenkins_to_github_notify.notify import parse_repos_and_branches
 from jenkins_to_github_notify.notify import parse_slug
 from jenkins_to_github_notify.notify import post_status_to_github
 from jenkins_to_github_notify.notify import RepoBuildInfo
@@ -113,6 +116,38 @@ def test_fetch_build_status_no_github_repos(
         )
         assert list(result.repo_infos) == []
         assert result.status is BuildStatus.Failure
+
+
+def test_fetch_build_status_no_build_info(
+    fake_config: dict[str, str],
+    datadir: Path,
+    mocker: MockerFixture,
+) -> None:
+    """
+    Fallback to ask GitHub for branches/commits in case the job build info from Jenkins
+    does not contain that information.
+    """
+    job_name = "test-code-cov-fb-EDEN-2506-github-notification-newlinux"
+    build_number = 16
+    mock_login = mocker.patch.object(github3, "login")
+    mock_repository = mock_login.return_value.repository
+    mock_branch = mock_repository.return_value.branch
+    mock_branch.return_value.commit.sha = "deadbeef"
+
+    with mocking_jenkins_build_info(
+        mocker, datadir / "jenkins-response-no-build-data.json", fake_config, job_name, build_number
+    ) as jenkins_mock:
+        job_xml_config = datadir.joinpath("job-multiple-repos.xml").read_text("UTF-8")
+        jenkins_mock.return_value.get_job_config.return_value = job_xml_config
+        result = fetch_build_info(fake_config, job_name, build_number)
+        assert list(result.repo_infos) == [
+            RepoBuildInfo(
+                slug="ESSS/test-code-cov",
+                branch_name="fb-EDEN-2506-github-notification",
+                commit="deadbeef",
+            )
+        ]
+        assert result.status is BuildStatus.Pending
 
 
 @pytest.mark.parametrize(
@@ -252,6 +287,59 @@ def test_handle_jenkins_notification(
     ]
 
 
+class TestParseReposAndBranches:
+    def test_parse_repos_and_branches_multiple(self, datadir: Path) -> None:
+        job_xml_config = datadir.joinpath("job-multiple-repos.xml").read_text("UTF-8")
+        result = parse_repos_and_branches(job_xml_config)
+        assert result == [
+            ("git@github.com:ESSS/test-code-cov.git", "fb-EDEN-2506-github-notification"),
+            (
+                "ssh://git@eden.fln.esss.com.br:7999/esss/eden.git",
+                "fb-EDEN-2506-github-notification",
+            ),
+        ]
+
+    def test_parse_repos_and_branches_single(self, datadir: Path) -> None:
+        job_xml_config = datadir.joinpath("job-single-repo.xml").read_text("UTF-8")
+        result = parse_repos_and_branches(job_xml_config)
+        assert result == [
+            ("ssh://git@eden.fln.esss.com.br:7999/esss/eden.git", "master"),
+        ]
+
+
+class TestFetchRepoInfosBasedOnJobXMLConfig:
+    def test_fetch_repo_infos_based_on_job_xml_config(
+        self, fake_config: dict[str, str], mocker: MockerFixture, datadir: Path
+    ) -> None:
+        mock_login = mocker.patch.object(github3, "login")
+        mock_repository = mock_login.return_value.repository
+        mock_branch = mock_repository.return_value.branch
+        mock_branch.return_value.commit.sha = "deadbeef"
+
+        job_xml_config = datadir.joinpath("job-multiple-repos.xml").read_text("UTF-8")
+
+        result = fetch_repo_infos_based_on_job_xml_config(fake_config, job_xml_config)
+        assert result == [
+            RepoBuildInfo(
+                slug="ESSS/test-code-cov",
+                branch_name="fb-EDEN-2506-github-notification",
+                commit="deadbeef",
+            )
+        ]
+        assert mock_login.call_args == mocker.call(token=fake_config["GH_TOKEN"])
+        assert mock_repository.call_args == mocker.call("ESSS", "test-code-cov")
+        assert mock_branch.call_args == mocker.call("fb-EDEN-2506-github-notification")
+
+    def test_fetch_repo_infos_based_on_job_xml_config_no_github_repo(
+        self, fake_config: dict[str, str], mocker: MockerFixture, datadir: Path
+    ) -> None:
+        mock_login = mocker.patch.object(github3, "login")
+        job_xml_config = datadir.joinpath("job-single-repo.xml").read_text("UTF-8")
+        result = fetch_repo_infos_based_on_job_xml_config(fake_config, job_xml_config)
+        assert result == []
+        assert mock_login.call_args is None
+
+
 @contextmanager
 def mocking_jenkins_build_info(
     mocker: MockerFixture, response_json: Path, config: dict[str, str], job_name: str, number: int
@@ -260,7 +348,7 @@ def mocking_jenkins_build_info(
     response_data = json.loads(response_json.read_text("UTF-8"))
     jenkins_mock().get_build_info.return_value = response_data
 
-    yield
+    yield jenkins_mock
 
     assert jenkins_mock.call_args == mocker.call(
         config["JENKINS_URL"],

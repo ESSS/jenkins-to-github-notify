@@ -1,0 +1,58 @@
+{
+  "_class" : "hudson.model.FreeStyleBuild",
+  "actions" : [
+    {
+      "_class" : "hudson.model.CauseAction",
+      "causes" : [
+        {
+          "_class" : "hudson.model.Cause$UserIdCause",
+          "shortDescription" : "Started by user Bruno Oliveira",
+          "userId" : "bruno",
+          "userName" : "Bruno Oliveira"
+        }
+      ]
+    },
+    {
+
+    },
+    {
+
+    },
+    {
+
+    },
+    {
+      "_class" : "org.jenkinsci.plugins.displayurlapi.actions.RunDisplayAction"
+    }
+  ],
+  "artifacts" : [
+
+  ],
+  "building" : true,
+  "description" : null,
+  "displayName" : "#16",
+  "duration" : 0,
+  "estimatedDuration" : 71716,
+  "executor" : {
+
+  },
+  "fullDisplayName" : "test-code-cov-fb-EDEN-2506-github-notification-newlinux #16",
+  "id" : "16",
+  "keepLog" : false,
+  "number" : 16,
+  "queueId" : 112984,
+  "result" : null,
+  "timestamp" : 1658510177623,
+  "url" : "https://eden.esss.co/jenkins/job/test-code-cov-fb-EDEN-2506-github-notification-newlinux/16/",
+  "builtOn" : "dev-centos7-linux-sv02-ci03",
+  "changeSet" : {
+    "_class" : "hudson.scm.EmptyChangeLogSet",
+    "items" : [
+
+    ],
+    "kind" : null
+  },
+  "culprits" : [
+
+  ]
+}

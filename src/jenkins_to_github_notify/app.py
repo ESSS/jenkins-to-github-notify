@@ -26,7 +26,7 @@ async def startup_event() -> None:
         assert isinstance(value, str), f"Unexpected type in config value: {value!r} {type(value)}"
         config[key] = value
     check_configuration(config)
-    logging.basicConfig(level=logging.INFO, format="%(levelname)-8s  %(message)s")
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s]  %(message)-8s")
     logger.setLevel(logging.INFO)
     logger.info("Configuration validated.")
 

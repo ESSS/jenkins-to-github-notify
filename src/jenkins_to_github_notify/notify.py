@@ -1,9 +1,13 @@
 import re
 import secrets
 from enum import Enum
+from io import StringIO
+from typing import Any
 from typing import Sequence
+from xml.etree.ElementTree import parse
 
 import attr
+import github3
 import jenkins
 import requests
 
@@ -79,19 +83,15 @@ def fetch_build_info(config: dict[str, str], job_name: str, number: int) -> JobB
     )
     response_data = server.get_build_info(job_name, number=number)
 
-    repo_infos = []
-    for action in response_data.get("actions", []):
-        if action.get("_class", "") != "hudson.plugins.git.util.BuildData":
-            continue
-        remote_urls = action.get("remoteUrls", [])
-        if not remote_urls:
-            continue
-        for remote_url in remote_urls:
-            if slug := parse_slug(remote_url):
-                branch_data = action["lastBuiltRevision"]["branch"][0]
-                branch_name = branch_data["name"].removeprefix("origin/")
-                commit = branch_data["SHA1"]
-                repo_infos.append(RepoBuildInfo(slug=slug, commit=commit, branch_name=branch_name))
+    try:
+        repo_infos = _extract_repo_infos_from_response(response_data)
+    except NoRepositoriesFoundError:
+        # Build info response does not contain any repositories/commits (happens when
+        # starting a job), so we need to parse the repositories/branches configuration
+        # from the job configuration and query GitHub.
+        job_xml_config = server.get_job_config(job_name)
+        repo_infos = fetch_repo_infos_based_on_job_xml_config(config, job_xml_config)
+
     job_result = response_data.get("result", "")
     if job_result is None:
         status = BuildStatus.Pending
@@ -100,6 +100,88 @@ def fetch_build_info(config: dict[str, str], job_name: str, number: int) -> JobB
     else:
         status = BuildStatus.Failure
     return JobBuildInfo(repo_infos, status)
+
+
+def _extract_repo_infos_from_response(response_data: dict[str, Any]) -> Sequence[RepoBuildInfo]:
+    """
+    Extract a sequence of RepoBuildInfo from the the  response of a get_build_info() call
+    for a jenkins job.
+
+    This returns only build information for GitHub repositories, any other servers are ignored.
+
+    Raises NoRepositoriesFoundError if there is no repository at all definition in the response (GitHub or not).
+    """
+    repo_infos = []
+    found_any_repos_at_all = False
+    for action in response_data.get("actions", []):
+        if action.get("_class", "") != "hudson.plugins.git.util.BuildData":
+            continue
+        remote_urls = action.get("remoteUrls", [])
+        if not remote_urls:
+            continue
+        found_any_repos_at_all = True
+        for remote_url in remote_urls:
+            if slug := parse_slug(remote_url):
+                branch_data = action["lastBuiltRevision"]["branch"][0]
+                branch_name = branch_data["name"].removeprefix("origin/")
+                commit = branch_data["SHA1"]
+                repo_infos.append(RepoBuildInfo(slug=slug, commit=commit, branch_name=branch_name))
+
+    if found_any_repos_at_all:
+        return repo_infos
+    else:
+        raise NoRepositoriesFoundError
+
+
+def fetch_repo_infos_based_on_job_xml_config(
+    config: dict[str, str], job_xml_config: str
+) -> Sequence[RepoBuildInfo]:
+    """
+    Parse the given Jenkins job configuration and extract the GitHub repositories and branches from it,
+    using then the GitHub API to query the latest commit for that branch.
+    """
+    repos_and_branches = parse_repos_and_branches(job_xml_config)
+    slugs_and_branches = [
+        (parse_slug(url), branch) for url, branch in repos_and_branches if parse_slug(url)
+    ]
+    if not slugs_and_branches:
+        return []
+
+    result = []
+    gh = github3.login(token=config["GH_TOKEN"])
+    for slug, branch in slugs_and_branches:
+        assert slug is not None
+        owner, name = slug.split("/")
+        repo = gh.repository(owner, name)
+        sha = repo.branch(branch).commit.sha
+        result.append(RepoBuildInfo(slug=slug, branch_name=branch, commit=sha))
+
+    return result
+
+
+def parse_repos_and_branches(job_xml_config: str) -> Sequence[tuple[str, str]]:
+    """
+    Given the XML configuration of a job, parse it and return a sequence of
+    (repo-url, branch-name).
+    """
+    et = parse(StringIO(job_xml_config))
+    r = et.getroot()
+
+    # Multiple repositories:
+    git_roots = list(r.findall(".//hudson.plugins.git.GitSCM"))
+    # Single repositories:
+    git_roots += list(r.findall(".//scm[@class='hudson.plugins.git.GitSCM']"))
+
+    result = []
+    for git_root in git_roots:
+        names = [x.text for x in git_root.findall(".//hudson.plugins.git.BranchSpec/name")]
+        urls = [x.text for x in git_root.findall(".//hudson.plugins.git.UserRemoteConfig/url")]
+        if names and urls:
+            name = names[0]
+            url = urls[0]
+            if name and url:
+                result.append((url, name))
+    return result
 
 
 def parse_slug(url: str) -> str | None:
@@ -167,3 +249,10 @@ def compute_job_alias(*, job_name: str, branch_name: str) -> str:
     # "test-repo-fb-EDEN-2505" -> "test-repo-" -> "test-repo"
     alias = alias.rstrip("-")
     return alias
+
+
+class NoRepositoriesFoundError(Exception):
+    """
+    Raised by _extract_repo_infos_from_response if not repositories are found in
+    the response.
+    """

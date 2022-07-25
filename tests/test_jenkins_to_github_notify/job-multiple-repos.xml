@@ -1,0 +1,224 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?><project>
+  <actions/>
+  <description>&lt;!-- Managed by Job's Done --&gt;</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <jenkins.model.BuildDiscarderProperty>
+      <strategy class="hudson.tasks.LogRotator">
+        <daysToKeep>7</daysToKeep>
+        <numToKeep>-1</numToKeep>
+        <artifactDaysToKeep>-1</artifactDaysToKeep>
+        <artifactNumToKeep>-1</artifactNumToKeep>
+      </strategy>
+    </jenkins.model.BuildDiscarderProperty>
+    <com.dabsquared.gitlabjenkins.connection.GitLabConnectionProperty plugin="gitlab-plugin@1.5.35">
+      <gitLabConnection>gitlab-esss</gitLabConnection>
+      <jobCredentialId/>
+      <useAlternativeCredential>false</useAlternativeCredential>
+    </com.dabsquared.gitlabjenkins.connection.GitLabConnectionProperty>
+
+  </properties>
+  <scm class="org.jenkinsci.plugins.multiplescms.MultiSCM" plugin="multiple-scms@0.8">
+    <scms>
+      <hudson.plugins.git.GitSCM plugin="git@4.11.3">
+        <configVersion>2</configVersion>
+        <userRemoteConfigs>
+          <hudson.plugins.git.UserRemoteConfig>
+            <url>git@github.com:ESSS/test-code-cov.git</url>
+          </hudson.plugins.git.UserRemoteConfig>
+        </userRemoteConfigs>
+        <branches>
+          <hudson.plugins.git.BranchSpec>
+            <name>fb-EDEN-2506-github-notification</name>
+          </hudson.plugins.git.BranchSpec>
+        </branches>
+        <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+        <submoduleCfg class="empty-list"/>
+        <extensions>
+          <hudson.plugins.git.extensions.impl.LocalBranch>
+            <localBranch>fb-EDEN-2506-github-notification</localBranch>
+          </hudson.plugins.git.extensions.impl.LocalBranch>
+          <hudson.plugins.git.extensions.impl.CloneOption>
+            <shallow>false</shallow>
+            <noTags>true</noTags>
+            <reference>$WORKSPACE/../../Shared/ref_repos/github/alfasim</reference>
+            <honorRefspec>false</honorRefspec>
+          </hudson.plugins.git.extensions.impl.CloneOption>
+          <hudson.plugins.git.extensions.impl.CleanCheckout>
+            <deleteUntrackedNestedRepositories>false</deleteUntrackedNestedRepositories>
+          </hudson.plugins.git.extensions.impl.CleanCheckout>
+          <hudson.plugins.git.extensions.impl.GitLFSPull/>
+          <hudson.plugins.git.extensions.impl.RelativeTargetDirectory>
+            <relativeTargetDir>test-code-cov</relativeTargetDir>
+          </hudson.plugins.git.extensions.impl.RelativeTargetDirectory>
+        </extensions>
+      </hudson.plugins.git.GitSCM>
+      <hudson.plugins.git.GitSCM plugin="git@4.11.3">
+        <configVersion>2</configVersion>
+        <userRemoteConfigs>
+          <hudson.plugins.git.UserRemoteConfig>
+            <url>ssh://git@eden.fln.esss.com.br:7999/esss/eden.git</url>
+          </hudson.plugins.git.UserRemoteConfig>
+        </userRemoteConfigs>
+        <branches>
+          <hudson.plugins.git.BranchSpec>
+            <name>fb-EDEN-2506-github-notification</name>
+          </hudson.plugins.git.BranchSpec>
+        </branches>
+        <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+        <submoduleCfg class="empty-list"/>
+        <extensions>
+          <hudson.plugins.git.extensions.impl.LocalBranch>
+            <localBranch>fb-EDEN-2506-github-notification</localBranch>
+          </hudson.plugins.git.extensions.impl.LocalBranch>
+          <hudson.plugins.git.extensions.impl.CloneOption>
+            <shallow>false</shallow>
+            <noTags>true</noTags>
+            <reference>$WORKSPACE/../../Shared/ref_repos/eden</reference>
+            <honorRefspec>false</honorRefspec>
+          </hudson.plugins.git.extensions.impl.CloneOption>
+          <hudson.plugins.git.extensions.impl.CleanCheckout>
+            <deleteUntrackedNestedRepositories>false</deleteUntrackedNestedRepositories>
+          </hudson.plugins.git.extensions.impl.CleanCheckout>
+          <hudson.plugins.git.extensions.impl.GitLFSPull/>
+          <hudson.plugins.git.extensions.impl.RelativeTargetDirectory>
+            <relativeTargetDir>eden</relativeTargetDir>
+          </hudson.plugins.git.extensions.impl.RelativeTargetDirectory>
+        </extensions>
+      </hudson.plugins.git.GitSCM>
+    </scms>
+  </scm>
+  <assignedNode>newlinux</assignedNode>
+  <canRoam>false</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>bash -exc "
+    export CONDA_PY=36
+    export ESSS_SINGLE_ENV=1
+    cd $WORKSPACE/test-code-cov
+    source $WORKSPACE/eden/bin/setup_slave
+    echo Hello world
+"</command>
+      <configuredLocalRules/>
+    </hudson.tasks.Shell>
+    <org.jenkinsci.plugins.conditionalbuildstep.singlestep.SingleConditionalBuilder plugin="conditional-buildstep@1.4.2">
+      <condition class="org.jenkins_ci.plugins.run_condition.core.StatusCondition" plugin="run-condition@1.5">
+        <worstResult>
+          <name>SUCCESS</name>
+          <ordinal>0</ordinal>
+          <color>BLUE</color>
+          <completeBuild>true</completeBuild>
+        </worstResult>
+        <bestResult>
+          <name>SUCCESS</name>
+          <ordinal>0</ordinal>
+          <color>BLUE</color>
+          <completeBuild>true</completeBuild>
+        </bestResult>
+      </condition>
+      <buildStep class="hudson.tasks.Shell">
+        <command>export CONDA_PY=36
+cd $WORKSPACE/test-code-cov
+$WORKSPACE/eden/bin/exenv python $WORKSPACE/eden/bin/notify-github-commit-status.py success</command>
+        <configuredLocalRules/>
+      </buildStep>
+      <runner class="org.jenkins_ci.plugins.run_condition.BuildStepRunner$Fail" plugin="run-condition@1.5"/>
+    </org.jenkinsci.plugins.conditionalbuildstep.singlestep.SingleConditionalBuilder>
+    <org.jenkinsci.plugins.conditionalbuildstep.singlestep.SingleConditionalBuilder plugin="conditional-buildstep@1.4.2">
+      <condition class="org.jenkins_ci.plugins.run_condition.core.StatusCondition" plugin="run-condition@1.5">
+        <worstResult>
+          <name>ABORTED</name>
+          <ordinal>4</ordinal>
+          <color>ABORTED</color>
+          <completeBuild>false</completeBuild>
+        </worstResult>
+        <bestResult>
+          <name>UNSTABLE</name>
+          <ordinal>1</ordinal>
+          <color>YELLOW</color>
+          <completeBuild>true</completeBuild>
+        </bestResult>
+      </condition>
+      <buildStep class="hudson.tasks.Shell">
+        <command>export CONDA_PY=36
+cd $WORKSPACE/test-code-cov
+$WORKSPACE/eden/bin/exenv python $WORKSPACE/eden/bin/notify-github-commit-status.py failure</command>
+        <configuredLocalRules/>
+      </buildStep>
+      <runner class="org.jenkins_ci.plugins.run_condition.BuildStepRunner$Fail" plugin="run-condition@1.5"/>
+    </org.jenkinsci.plugins.conditionalbuildstep.singlestep.SingleConditionalBuilder>
+  </builders>
+  <publishers>
+    <xunit plugin="xunit@3.1.0">
+      <types>
+        <JUnitType>
+          <pattern>**/build/tests/pytest*.xml,**/build/cpptests/*.xml</pattern>
+          <excludesPattern/>
+          <skipNoTestFiles>true</skipNoTestFiles>
+          <failIfNotNew>false</failIfNotNew>
+          <deleteOutputFiles>true</deleteOutputFiles>
+          <stopProcessingIfError>true</stopProcessingIfError>
+        </JUnitType>
+      </types>
+      <thresholds>
+        <org.jenkinsci.plugins.xunit.threshold.FailedThreshold>
+          <unstableThreshold>0</unstableThreshold>
+          <unstableNewThreshold>0</unstableNewThreshold>
+        </org.jenkinsci.plugins.xunit.threshold.FailedThreshold>
+      </thresholds>
+      <thresholdMode>1</thresholdMode>
+      <extraConfiguration>
+        <testTimeMargin>3000</testTimeMargin>
+        <sleepTime>10</sleepTime>
+        <reduceLog>true</reduceLog>
+        <followSymlink>true</followSymlink>
+        <skipPublishingChecks>true</skipPublishingChecks>
+        <checksName/>
+      </extraConfiguration>
+      <testDataPublishers class="empty-set"/>
+    </xunit>
+    <org.jenkinsci.plugins.stashNotifier.StashNotifier plugin="stashNotifier@1.28">
+      <stashServerBaseUrl/>
+      <credentialsId/>
+      <ignoreUnverifiedSSLPeer>false</ignoreUnverifiedSSLPeer>
+      <commitSha1/>
+      <buildName/>
+      <includeBuildNumberInKey>false</includeBuildNumberInKey>
+      <projectKey/>
+      <prependParentProjectKey>false</prependParentProjectKey>
+      <disableInprogressNotification>false</disableInprogressNotification>
+      <considerUnstableAsSuccess>false</considerUnstableAsSuccess>
+      <globalConfig>
+        <adminAddress>bugreport@esss.co</adminAddress>
+        <jenkinsUrl>https://eden.esss.co/jenkins/</jenkinsUrl>
+      </globalConfig>
+    </org.jenkinsci.plugins.stashNotifier.StashNotifier>
+  </publishers>
+  <buildWrappers>
+    <hudson.plugins.ws__cleanup.PreBuildCleanup plugin="ws-cleanup@0.42">
+      <patterns>
+        <hudson.plugins.ws__cleanup.Pattern>
+          <pattern>**/build/tests/pytest*.xml</pattern>
+          <type>INCLUDE</type>
+        </hudson.plugins.ws__cleanup.Pattern>
+        <hudson.plugins.ws__cleanup.Pattern>
+          <pattern>**/build/cpptests/*.xml</pattern>
+          <type>INCLUDE</type>
+        </hudson.plugins.ws__cleanup.Pattern>
+      </patterns>
+      <deleteDirs>false</deleteDirs>
+      <cleanupParameter/>
+      <externalDelete/>
+      <disableDeferredWipeout>false</disableDeferredWipeout>
+    </hudson.plugins.ws__cleanup.PreBuildCleanup>
+    <hudson.plugins.timestamper.TimestamperBuildWrapper plugin="timestamper@1.18"/>
+    <hudson.plugins.ansicolor.AnsiColorBuildWrapper plugin="ansicolor@1.0.1">
+      <colorMapName>xterm</colorMapName>
+    </hudson.plugins.ansicolor.AnsiColorBuildWrapper>
+  </buildWrappers>
+</project>
