@@ -84,7 +84,7 @@ To run the tests:
 Deployment
 ==========
 
-There is a ``deploy`` workflow which is `triggered manually <https://github.com/ESSS/jenkins-to-github-notify/actions>`__.
+There is a ``deploy`` workflow which is `triggered manually <https://github.com/ESSS/jenkins-to-github-notify/actions/workflows/deploy.yml>`__.
 
 The inputs are:
 
