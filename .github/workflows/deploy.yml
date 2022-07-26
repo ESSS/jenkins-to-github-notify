@@ -21,7 +21,7 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      IMAGE_NAME: jenkins-to-github-notify:${{ inputs.version }}
+      IMAGE_NAME: ${{ secrets.docker_registry_push_url }}/jenkins-to-github-notify:${{ inputs.version }}
 
     steps:
     - uses: actions/checkout@v2

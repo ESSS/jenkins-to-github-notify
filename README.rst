@@ -93,7 +93,8 @@ The inputs are:
 
 This workflow uses these organization/repository secrets:
 
-* ``docker_registry``: the URL of the docker registry.
+* ``docker_registry``: the URL of the docker registry used to login.
+* ``docker_registry_push_url``: the URL where we should push images to.
 * ``docker_push_user``: user name with has push access to the registry.
 * ``docker_push_password``: password of the user.
 
