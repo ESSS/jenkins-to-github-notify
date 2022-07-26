@@ -20,4 +20,4 @@ RUN pip-sync
 
 EXPOSE 5000
 
-CMD ["uvicorn", "jenkins_to_github_notify.app:app", "--host", "0.0.0.0", "--port", "8040", "--workers", "4", "--timeout", "300"]
+CMD ["uvicorn", "jenkins_to_github_notify.app:app", "--host", "0.0.0.0", "--port", "5000", "--workers", "4", "--timeout", "300"]
