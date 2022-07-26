@@ -15,15 +15,15 @@ This repository contains a ``Dockerfile`` which can be used to build an image, w
 Service configuration
 ---------------------
 
-Place a ``.env`` file in the current working directory where the service is started:
+Place a ``.env`` file in the current working directory where the service is started::
 
     JENKINS_URL=https://some-server.com/jenkins
     JENKINS_USERNAME=jenkins-bot
     JENKINS_PASSWORD=PASSWORD_FOR_JENKINS_BOT
     JENKINS_SECRET=GENERATED_SECRET
 
-GH_TOKEN=GITHUB_TOKEN
-```
+    GH_TOKEN=GITHUB_TOKEN
+
 
 * ``JENKINS_URL``: full URL to the Jenkins server.
 * ``JENKINS_USERNAME``: user name to access the Jenkins API.
@@ -49,8 +49,9 @@ Jenkins configuration
 Go to *Configure System*, and enter a new *Web Hook*:
 
 * Enter the address/port where the container is running.
-* Enter a timeout (default is fine).
+* Enter a timeout (30s is fine).
 * Click *Advanced*, uncheck *All Events*, and mark:
+
   - ``jenkins.job.started``
   - ``jenkins.job.completed``
 
@@ -80,6 +81,22 @@ To run the tests:
 
     pytest
 
+Deployment
+==========
+
+There is a ``deploy`` workflow which is `triggered manually <https://github.com/ESSS/jenkins-to-github-notify/actions>`__.
+
+The inputs are:
+
+* ``version``: the ref version to push, usually a tag.
+* ``push``: if we should push the build image to the configured docker registry or not.
+
+This workflow uses these organization/repository secrets:
+
+* ``docker_registry``: the URL of the docker registry.
+* ``docker_push_user``: user name with has push access to the registry.
+* ``docker_push_password``: password of the user.
+
 Similar projects
 ================
 
@@ -87,7 +104,7 @@ There are Jenkins plugins which do something similar, but did not met all our re
 
 * `GitHub plugin <https://plugins.jenkins.io/github/>`_: also reports build status, however it does not work
   for multiple repositories (see `JENKINS-28177 <https://issues.jenkins.io/browse/JENKINS-28177>`_).
-* `GitHub Checks <https://plugins.jenkins.io/github-checks/>`_: unfortunately requires a more complex setup requiring
+* `GitHub Checks plugin <https://plugins.jenkins.io/github-checks/>`_: unfortunately requires a more complex setup requiring
   a GitHub App for authentication, and seems (but not 100% sure) to require setting up a special "github project"
   in Jenkins (instead of a normal Git repository).
 
