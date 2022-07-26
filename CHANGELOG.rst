@@ -2,6 +2,10 @@
 CHANGELOG
 =========
 
+0.1.2
+=====
+
+* Fixed entry-point parameters in Dockerfile.
 
 0.1.1
 =====
