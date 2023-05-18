@@ -1,7 +1,7 @@
 FROM python:3.10.5-slim
 
 # pass with --build-arg SETUPTOOLS_SCM_PRETEND_VERSION=VERSION; this is needed by setuptools_scm
-ARG SETUPTOOLS_SCM_PRETEND_VERSION=dev
+ARG SETUPTOOLS_SCM_PRETEND_VERSION=0.0.0.dev
 
 WORKDIR /app
 
