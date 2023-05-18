@@ -4,6 +4,7 @@ from enum import Enum
 from io import StringIO
 from typing import Any
 from typing import Sequence
+from urllib.parse import urljoin
 from xml.etree.ElementTree import parse
 
 import attr
@@ -213,7 +214,7 @@ def post_status_to_github(
     description = f"build #{build_number} {status.value}"
     json_data = {
         "state": status.value,
-        "target_url": config["JENKINS_URL"] + "/" + job_url,
+        "target_url": urljoin(config["JENKINS_URL"], job_url),
         "description": description,
         "context": f"{job_alias} job",
     }

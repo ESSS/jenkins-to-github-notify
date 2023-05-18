@@ -2,6 +2,11 @@
 CHANGELOG
 =========
 
+0.1.3
+=====
+
+* Started accepting absolute job URLs.
+
 0.1.2
 =====
 
