@@ -25,7 +25,7 @@ from pytest_mock import MockerFixture
 @pytest.fixture
 def fake_config() -> dict[str, str]:
     return {
-        "JENKINS_URL": "FAKE_JENKINS_URL",
+        "JENKINS_URL": "http://FAKE_JENKINS_URL",
         "JENKINS_USERNAME": "FAKE_JENKINS_USERNAME",
         "JENKINS_PASSWORD": "FAKE_JENKINS_PASSWORD",
         "JENKINS_SECRET": "FAKE_JENKINS_SECRET",
@@ -199,7 +199,7 @@ def test_post_status_to_github(
     description = f"build #8 success"
     json_data = {
         "state": "success",
-        "target_url": "FAKE_JENKINS_URL/job/test-code-cov-fb-EDEN-2506-github-notification-newlinux/8",
+        "target_url": "http://FAKE_JENKINS_URL/job/test-code-cov-fb-EDEN-2506-github-notification-newlinux/8",
         "description": description,
         "context": f"{job_alias} job",
     }
@@ -258,7 +258,7 @@ def test_handle_jenkins_notification(
     headers = {"Accept": "application/vnd.github+jso", "Authorization": "token FAKE_GH_TOKEN"}
     json = {
         "state": "success",
-        "target_url": "FAKE_JENKINS_URL/job/alfasim-fb-ASIM-4742-add-gui-support-esp-catolog-app-newlinux/6",
+        "target_url": "http://FAKE_JENKINS_URL/job/alfasim-fb-ASIM-4742-add-gui-support-esp-catolog-app-newlinux/6",
         "description": "build #6 success",
         "context": "alfasim/app-newlinux job",
     }
