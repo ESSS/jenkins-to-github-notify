@@ -5,6 +5,8 @@ Here we declare all the FastAPI entry points, which should do minimal work as po
 delegating to other modules the actual work.
 """
 import logging
+from contextlib import asynccontextmanager
+from typing import AsyncIterator
 
 from dotenv import dotenv_values
 from fastapi import FastAPI
@@ -14,13 +16,12 @@ from jenkins_to_github_notify.notify import post_status_to_github
 from jenkins_to_github_notify.notify import validate_event
 from jenkins_to_github_notify.notify import validate_secret
 
-app = FastAPI()
-config: dict[str, str] = {}
 logger = logging.getLogger("app")
+config: dict[str, str] = {}
 
 
-@app.on_event("startup")
-async def startup_event() -> None:
+@asynccontextmanager
+async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     """Fail early during startup in case any variable is missing."""
     for key, value in dotenv_values(".env").items():
         assert isinstance(value, str), f"Unexpected type in config value: {value!r} {type(value)}"
@@ -29,6 +30,10 @@ async def startup_event() -> None:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s]  %(message)-8s")
     logger.setLevel(logging.INFO)
     logger.info("Configuration validated.")
+    yield
+
+
+app = FastAPI(lifespan=lifespan)
 
 
 @app.get("/jobs/notify")
