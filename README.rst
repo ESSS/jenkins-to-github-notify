@@ -70,7 +70,7 @@ Create a virtual environment for Python 3.10, activate it, then execute:
 
 .. code-block:: console
 
-    pip install piptools
+    pip install pip-tools
     pip-sync
     pre-commit install
 

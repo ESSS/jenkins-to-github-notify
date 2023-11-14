@@ -1,4 +1,5 @@
 -e file:.#egg=jenkins_to_github_notify
+attrs
 fastapi
 github3.py
 mypy
